@@ -1,5 +1,9 @@
 import pygame, sys
+import databases.databases as databases
 pygame.init()
+databases.init_login_db()
+databases.init_data_diri_db()
+databases.init_kereta_db()
 
 # Window
 WIDTH, HEIGHT = 800, 500
@@ -267,7 +271,7 @@ while True:
             pass_box.event(e)
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if login_submit.hover(mouse):
-                    if email_box.text == REAL_EMAIL and pass_box.text == REAL_PASS:
+                    if databases.login_user(email_box.text, pass_box.text):
                         page = "main_menu"
                     else:
                         popup = True
@@ -301,6 +305,7 @@ while True:
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if next_reg_btn.hover(mouse):
                     if nama_box.text and nik_box.text and hp_box.text and gender_dropdown.selected:
+                        databases.add_user(nama_box.text, hp_box.text, nik_box.text, gender_dropdown.selected)
                         page = "register2"
                         prev_page = "register1"
                 if back_btn.hover(mouse):
@@ -324,6 +329,7 @@ while True:
             reg_pass.event(e)
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if finish_btn.hover(mouse):
+                    databases.register_user(reg_email.text, reg_pass.text)
                     popup_regis = True
                 if back_btn.hover(mouse):
                     page = prev_page
